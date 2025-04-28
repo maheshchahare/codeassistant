@@ -1,0 +1,763 @@
+/* Global Styles */
+:root {
+  --primary-color: #4a6bff;
+  --primary-color-dark: #3a55d9;
+  --secondary-color: #6c757d;
+  --bg-color: #f8f9fa;
+  --bg-dark: #343a40;
+  --text-color: #212529;
+  --border-color: #dee2e6;
+  --success-color: #28a745;
+  --light-color: #e9ecef;
+  --sidebar-width: 250px;  /* Increased from typical 250px */
+  --header-height: 60px;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* Layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center all content horizontally */
+    position: relative; /* Important to allow absolute positioning inside */
+    padding: 0 20px;
+    height: var(--header-height);
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: var(--shadow);
+    z-index: 10;
+}
+
+/* Style the sidebar toggle button */
+.toggle-sidebar {
+    position: absolute;
+    left: 20px; /* fixed at left */
+}
+
+/* Style the settings toggle button */
+.toggle-settings {
+    position: absolute;
+    right: 20px; /* fixed at right */
+}
+
+/* Make h1 always stay center */
+.header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    /* display: flex; */
+    align-items: center;
+    gap: 10px;
+}
+
+
+.header-icon {
+  margin-right: 10px;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - var(--header-height));
+  position: relative; /* important for sidebar absolute */
+}
+
+/* Sessions Sidebar Styling */
+.sessions-sidebar {
+  width: var(--sidebar-width);
+  background-color: white;
+  border-right: 1px solid var(--border-color);
+  height: 100%;
+  transform: translateX(0); /* visible by default */
+  transition: transform 0.3s ease; /* smooth slide in/out */
+  left: 0;
+  top: var(--header-height);
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.sessions-header {
+  padding: 15px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sessions-header h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.new-chat-btn {
+  background: linear-gradient(135deg, #4a6bff, #3a55d9);
+  color: white;
+  border: none;
+  border-radius: 9999px; /* Make it pill-shaped */
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(74, 107, 255, 0.3);
+  transition: all 0.3s ease;
+  width: auto;
+  margin-bottom: 20px;
+  align-self: center;
+}
+
+.new-chat-btn:hover {
+  background: linear-gradient(135deg, #3a55d9, #4a6bff);
+  transform: translateY(-2px);
+}
+
+.new-chat-btn i {
+  margin-right: 5px;
+}
+
+.sessions-list-container {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.session-list {
+  list-style: none;
+  padding: 0;
+}
+
+/* Session Item Styling */
+.session-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  height:25px
+}
+
+.session-item i {
+  margin-right: 15px;
+  font-size: 1.1rem;
+  color: var(--secondary-color);
+  transition: color 0.2s;
+  width: 20px;
+  text-align: center;
+}
+
+.session-item span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+}
+
+/* Hover effect for session items */
+.session-item:hover {
+  background-color: #f0f4ff;
+}
+
+/* Active session styling */
+.session-item.active {
+  background-color: #e6ebff;
+  position: relative;
+}
+
+.session-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background-color: var(--primary-color);
+}
+
+.session-item.active i {
+  color: var(--primary-color);
+}
+
+/* Chat Panel */
+.chat-panel {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-left: var(--sidebar-width); /* default margin when sidebar open */
+  padding: 20px;
+  transition: margin-left 0.3s ease; /* smooth move when sidebar toggles */
+}
+
+.chat-messages {
+  width: 100%;
+  max-width: 800px;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.message {
+  max-width: 85%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  position: relative;
+  animation: messageAppear 0.3s ease;
+}
+
+@keyframes messageAppear {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.user-message {
+  align-self: flex-end;
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.bot-message {
+  align-self: flex-start;
+  background-color: #e9ecef;
+  color: var(--text-color);
+}
+
+.message-content {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.message-content pre {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 8px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 10px 0;
+}
+
+.message-content code {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.user-message .message-content code {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.input-area {
+  padding: 15px;
+  /* border-top: 1px solid var(--border-color); */
+  /* background-color: white; */
+  width: 100%;
+  max-width: 800px;
+}
+
+.input-container {
+  display: flex;
+  position: relative;
+}
+
+#user-input {
+  flex-grow: 1;
+  padding: 12px 45px 12px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 25px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+  overflow-y: auto;
+  max-height: 150px;
+}
+
+#user-input:focus {
+  border-color: var(--primary-color);
+}
+
+.send-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.send-button:hover {
+  background-color: var(--primary-color-dark);
+}
+
+/* Settings Panel */
+.settings-panel {
+  position: fixed;
+  right: -300px;
+  top: var(--header-height);
+  width: 300px;
+  height: calc(100vh - var(--header-height));
+  background-color: white;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  overflow-y: auto;
+  transition: right 0.3s ease;
+  z-index: 15;
+}
+
+.settings-panel.show {
+  right: 0;
+}
+
+.settings-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23495057' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.btn-group {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s;
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-success {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+/* Loading indicator */
+.loading {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  color: var(--secondary-color);
+}
+
+.loading-spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Overlay for mobile */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5;
+  display: none;
+}
+
+.overlay.show {
+  display: block;
+}
+
+/* Toggle settings button */
+.toggle-settings {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  padding: 5px;
+  transition: color 0.2s;
+}
+
+.toggle-settings:hover {
+  color: #e0e0e0;
+}
+
+/* Header Layout */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  position: relative;
+}
+
+.toggle-settings {
+  margin-left: 10px;
+}
+
+header h1 {
+  flex-grow: 1;
+  text-align: center;
+}
+
+/* hamburger button */
+.fas{
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  padding: 1px;
+  transition: color 0.2s;
+}
+
+.fas:hover {
+  color: #e0e0e0;
+}
+
+
+/* Sidebar Toggle Styles */
+.toggle-sidebar {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: absolute; /* Fix position of toggle button */
+  left: 20px;  /* Position it at the left of the header */
+  z-index: 10; /* Ensure it’s on top of other elements */
+}
+
+.toggle-sidebar.open {
+  color: var(--primary-color); /* Change color when sidebar is open */
+}
+
+/* Sidebar visibility toggle */
+#sidebar {
+  transform: translateX(-100%); /* Initially hide sidebar off-screen */
+  transition: transform 0.3s ease; /* Smooth transition */
+}
+
+#sidebar.open {
+  transform: translateX(0); /* Show sidebar when the "open" class is added */
+}
+
+/* Optional: Close the sidebar when clicking outside (overlay) */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5;
+  display: none; /* Initially hidden */
+}
+
+.overlay.show {
+  display: block; /* Display overlay when the sidebar is open */
+}
+
+.sessions-sidebar {
+  transform: translateX(0); /* visible by default */
+}
+
+.sessions-sidebar:not(.open) {
+  transform: translateX(-100%); /* hidden when no 'open' class */
+}
+/* When sidebar hidden, adjust margin */
+.sessions-sidebar:not(.open) ~ .chat-panel {
+  margin-left: 0;
+}
+
+/* Add these styles to your existing CSS file */
+
+/* Structured message styling */
+.message.structured .message-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Block styling */
+.message .block {
+  padding: 0;
+}
+
+/* Paragraph blocks */
+.message .block.paragraph {
+  line-height: 1.7;
+  color: inherit;
+}
+
+/* Code blocks */
+.message .block.code {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 8px 0;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.message .block.code pre {
+  margin: 0;
+  padding: 15px;
+  overflow-x: auto;
+  background-color: transparent;
+}
+
+.message .block.code code {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: 0.95rem;
+  white-space: pre;
+}
+
+/* List blocks */
+.message .block.list {
+  padding-left: 10px;
+}
+
+.message .block.list ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.message .block.list li {
+  margin-bottom: 8px;
+  position: relative;
+  padding-left: 5px;
+}
+
+.message .block.list li:last-child {
+  margin-bottom: 0;
+}
+
+/* Dark mode adjustments for structured content */
+@media (prefers-color-scheme: dark) {
+  .message .block.code {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .user-message .block.code code {
+    color: #e0e0e0;
+  }
+}
+
+/* Add support for syntax highlighting */
+.message .block.code .language-python .keyword,
+.message .block.code .language-javascript .keyword {
+  color: #569CD6;
+}
+
+.message .block.code .language-python .string,
+.message .block.code .language-javascript .string {
+  color: #CE9178;
+}
+
+.message .block.code .language-python .comment,
+.message .block.code .language-javascript .comment {
+  color: #6A9955;
+  font-style: italic;
+}
+
+/* Add styling for headings in paragraphs */
+.message .block.paragraph h1,
+.message .block.paragraph h2,
+.message .block.paragraph h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.message .block.paragraph h1 {
+  font-size: 1.5rem;
+}
+
+.message .block.paragraph h2 {
+  font-size: 1.3rem;
+}
+
+.message .block.paragraph h3 {
+  font-size: 1.1rem;
+}
+
+/* Add styling for inline code in paragraphs */
+.message .block.paragraph code {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9em;
+}
+
+/* Add animations for blocks to appear one by one */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message .block {
+  animation: fadeInUp 0.3s ease forwards;
+  animation-fill-mode: both;
+}
+
+.message .block:nth-child(1) { animation-delay: 0.1s; }
+.message .block:nth-child(2) { animation-delay: 0.2s; }
+.message .block:nth-child(3) { animation-delay: 0.3s; }
+.message .block:nth-child(4) { animation-delay: 0.4s; }
+.message .block:nth-child(5) { animation-delay: 0.5s; }
+
+/* Add "copy code" button styling */
+.message .block.code {
+  position: relative;
+}
+
+.code-copy-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.message .block.code:hover .code-copy-button {
+  opacity: 1;
+}
+
+.code-copy-button:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Enhanced styling for tables */
+.message .block.paragraph table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 15px 0;
+  font-size: 0.9em;
+}
+
+.message .block.paragraph th,
+.message .block.paragraph td {
+  padding: 8px 10px;
+  text-align: left;
+  border: 1px solid var(--border-color);
+}
+
+.message .block.paragraph th {
+  background-color: rgba(0, 0, 0, 0.03);
+  font-weight: 600;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .message .block.code {
+    font-size: 0.85rem;
+  }
+  
+  .message .block.paragraph {
+    font-size: 0.95rem;
+  }
+}

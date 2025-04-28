@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Assistant Bot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <!-- Hamburger button on the left side -->
+            <button id="toggle-sidebar" class="toggle-sidebar" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1><i class="fas fa-code header-icon"></i> Code Assistant</h1>
+            <!-- Toggle settings button remains on the right side -->
+            <button id="toggle-settings" class="toggle-settings" aria-label="Toggle settings">
+                <i class="fas fa-cog"></i>
+            </button>
+        </header>
+        
+        <div class="main-content">
+            <!-- Left Sidebar for Chat Sessions -->
+            <div class="sessions-sidebar">
+                    <h2><i class="fas fa-comments"></i> Chat Sessions</h2>
+                
+                    <button id="create-session-btn" class="new-chat-btn">
+                        <i class="fas fa-message"></i> New Chat
+                    </button>
+                <div class="sessions-list-container">
+                    <ul id="session-list" class="session-list">
+                        <!-- Sessions will be dynamically populated here -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="chat-panel">
+                <!-- Chat Area -->
+                <div id="chat-messages" class="chat-messages"></div>
+                <div class="input-area">
+                    <div class="input-container">
+                        <textarea id="user-input" placeholder="Enter your code or prompt here..." rows="3" style="resize: none;"></textarea>
+                        <button id="send-button" class="send-button" aria-label="Send message">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="settings-panel" class="settings-panel">
+                <div class="settings-title">Settings</div>
+                
+                <div class="form-group">
+                    <label for="model-select" class="form-label">LLM Model</label>
+                    <select id="model-select" class="form-select">
+                        <option value="codellama">CodeLlama</option>
+                        <option value="llama3">Llama 3</option>
+                        <option value="mistral">Mistral</option>
+                        <option value="mixtral">Mixtral</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="language-select" class="form-label">Programming Language</label>
+                    <select id="language-select" class="form-select">
+                        <option value="python">Python</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="java">Java</option>
+                        <option value="c++">C++</option>
+                        <option value="go">Go</option>
+                        <option value="rust">Rust</option>
+                        <option value="php">PHP</option>
+                        <option value="csharp">C#</option>
+                        <option value="ruby">Ruby</option>
+                        <option value="typescript">TypeScript</option>
+                        <option value="swift">Swift</option>
+                        <option value="kotlin">Kotlin</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="task-select" class="form-label">Task</label>
+                    <select id="task-select" class="form-select">
+                        <option value="query">Query</option>
+                        <option value="improve">Improve Code</option>
+                        <option value="document">Add Documentation</option>
+                        <option value="refactor">Refactor Code</option>
+                        <option value="optimize">Optimize Code</option>
+                        <option value="debug">Debug Code</option>
+                    </select>
+                </div>
+                
+                <div class="btn-group">
+                    <button id="clear-chat" class="btn btn-secondary">Clear Chat</button>
+                    <button id="check-health" class="btn btn-success">Check Connection</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="overlay" class="overlay"></div>
+    </div>
+
+    <script src="/static/js/script.js" defer></script>
+
+    <script>
+            document.getElementById("toggle-sidebar").addEventListener("click", function() {
+            const sidebar = document.querySelector(".sessions-sidebar");
+            sidebar.classList.toggle("open");
+        });
+    </script>
+</body>
+</html>
